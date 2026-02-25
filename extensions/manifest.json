@@ -5,7 +5,7 @@
   "description": "Skymark Airlines flight history extractor for 確定申告 (Japanese tax filing)",
   "permissions": [
     "storage",
-    "activeTab"
+    "tabs"
   ],
   "host_permissions": [
     "*://www.skymark.co.jp/*",

@@ -1,0 +1,250 @@
+/* Sky-Mark Flight History - Options Page Styles */
+
+:root {
+  --skymark-blue: #0066cc;
+  --skymark-blue-light: #e8f0fe;
+  --skymark-blue-dark: #004999;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --border-color: #ddd;
+  --bg-stripe: #f8f8f8;
+  --bg-white: #fff;
+  --font-stack: "Hiragino Kaku Gothic Pro", "Yu Gothic", Meiryo, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-stack);
+  color: var(--text-primary);
+  background: #f5f5f5;
+  min-width: 900px;
+  padding: 0 20px 40px;
+}
+
+header {
+  background: var(--skymark-blue);
+  color: #fff;
+  padding: 16px 24px;
+  margin: 0 -20px 20px;
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+header .subtitle {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+/* Controls Section */
+
+.controls {
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.control-row label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.control-row select {
+  font-family: var(--font-stack);
+  font-size: 14px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-white);
+}
+
+.control-row button {
+  font-family: var(--font-stack);
+  font-size: 13px;
+  padding: 7px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--bg-white);
+  color: var(--text-primary);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.control-row button:hover:not(:disabled) {
+  border-color: var(--skymark-blue);
+  color: var(--skymark-blue);
+}
+
+.control-row button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#extract-btn {
+  background: var(--skymark-blue);
+  color: #fff;
+  border-color: var(--skymark-blue);
+  font-weight: 600;
+}
+
+#extract-btn:hover:not(:disabled) {
+  background: var(--skymark-blue-dark);
+  border-color: var(--skymark-blue-dark);
+  color: #fff;
+}
+
+/* Status & Progress */
+
+.status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  min-height: 20px;
+}
+
+.status.error {
+  color: #c00;
+}
+
+.status.success {
+  color: #080;
+}
+
+.progress-container {
+  margin-top: 8px;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--skymark-blue);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Results Section */
+
+#results h2 {
+  font-size: 15px;
+  margin: 24px 0 10px;
+  padding-left: 10px;
+  border-left: 4px solid var(--skymark-blue);
+  color: var(--text-primary);
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  background: var(--bg-white);
+  margin-bottom: 16px;
+}
+
+thead th {
+  background: var(--skymark-blue);
+  color: #fff;
+  padding: 7px 8px;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 12px;
+  position: sticky;
+  top: 0;
+}
+
+td {
+  border: 1px solid var(--border-color);
+  padding: 5px 8px;
+  vertical-align: top;
+}
+
+tbody tr:nth-child(even) td {
+  background: var(--bg-stripe);
+}
+
+tbody tr:hover td {
+  background: #eef4ff;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pnr-border td {
+  border-top: 2px solid var(--skymark-blue);
+}
+
+.fee-detail {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding-left: 24px;
+}
+
+tfoot td {
+  background: var(--skymark-blue-light) !important;
+  font-weight: 700;
+  border-top: 2px solid var(--skymark-blue);
+}
+
+/* Summary Grid */
+
+.summary-grid {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.summary-grid > div {
+  flex: 0 1 auto;
+  min-width: 280px;
+}
+
+.summary-grid table {
+  width: auto;
+  min-width: 280px;
+}
+
+/* Responsive */
+
+@media (max-width: 1000px) {
+  .summary-grid {
+    flex-direction: column;
+  }
+
+  .summary-grid table {
+    width: 100%;
+  }
+}

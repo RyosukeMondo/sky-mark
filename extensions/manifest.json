@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Sky-Mark Flight History",
+  "version": "1.0.0",
+  "description": "Skymark Airlines flight history extractor for 確定申告 (Japanese tax filing)",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://www.skymark.co.jp/*",
+    "*://www.res.skymark.co.jp/*",
+    "*://d3ks8eh4veag7k.cloudfront.net/*",
+    "*://cognito-idp.ap-northeast-1.amazonaws.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.skymark.co.jp/ja/mypage/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "icons": {}
+}

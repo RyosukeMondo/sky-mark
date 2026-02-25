@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Sky-Mark Flight History</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header>
+    <h1>Sky-Mark Flight History</h1>
+    <p class="subtitle">スカイマーク搭乗履歴 - 確定申告用</p>
+  </header>
+
+  <section class="controls">
+    <div class="control-row">
+      <label for="year-select">対象年:</label>
+      <select id="year-select"></select>
+      <button id="extract-btn" type="button">Extract</button>
+      <button id="csv-btn" type="button" disabled>CSV Download</button>
+      <button id="json-btn" type="button" disabled>JSON Download</button>
+    </div>
+    <div id="status" class="status" role="status"></div>
+    <div class="progress-container" id="progress-container" hidden>
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </section>
+
+  <section id="results" hidden>
+    <div class="meta" id="meta-info"></div>
+
+    <h2>搭乗便一覧</h2>
+    <div class="table-wrapper">
+      <table id="flight-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>搭乗日</th>
+            <th>便名</th>
+            <th>機材</th>
+            <th>区間</th>
+            <th>運賃種別</th>
+            <th>運賃額</th>
+            <th>座席</th>
+            <th>諸費用</th>
+            <th>予約合計</th>
+            <th>PNR</th>
+          </tr>
+        </thead>
+        <tbody id="flight-tbody"></tbody>
+        <tfoot id="flight-tfoot"></tfoot>
+      </table>
+    </div>
+
+    <div class="summary-grid">
+      <div>
+        <h2>月別集計</h2>
+        <table id="monthly-table">
+          <thead>
+            <tr><th>月</th><th>フライト数</th><th>金額</th></tr>
+          </thead>
+          <tbody id="monthly-tbody"></tbody>
+          <tfoot id="monthly-tfoot"></tfoot>
+        </table>
+      </div>
+
+      <div>
+        <h2>費用種別集計</h2>
+        <table id="fee-table">
+          <thead>
+            <tr><th>種別</th><th>金額</th></tr>
+          </thead>
+          <tbody id="fee-tbody"></tbody>
+          <tfoot id="fee-tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script src="options.js"></script>
+</body>
+</html>

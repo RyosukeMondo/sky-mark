@@ -18,8 +18,21 @@ RES_DOMAIN = "www.res.skymark.co.jp"
 
 
 def load_cookies(cookie_path: str) -> list[dict]:
-    with open(cookie_path) as f:
-        return json.load(f)
+    path = Path(cookie_path)
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Cookie file not found: {cookie_path}\n"
+            "Export cookies from a logged-in Skymark MyPage session "
+            "(e.g., with EditThisCookie) and save as cookie.json."
+        )
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, list):
+        raise ValueError(
+            f"Invalid cookie file format: expected a JSON array, "
+            f"got {type(data).__name__}"
+        )
+    return data
 
 
 def _build_opener(cookies: list[dict]):
@@ -55,6 +68,12 @@ def refresh_id_token(cookies: list[dict]) -> str:
             refresh_token = c["value"]
         if "deviceKey" in c["name"]:
             device_key = c["value"]
+
+    if not refresh_token:
+        raise ValueError(
+            "No refresh token found in cookies. "
+            "Re-export cookies from a logged-in Skymark MyPage session."
+        )
 
     url = f"https://cognito-idp.{COGNITO_REGION}.amazonaws.com/"
     payload = json.dumps({
@@ -150,6 +169,7 @@ def run_fetch(cookies: list[dict], year: str, raw_dir: Path, delay: float = 1.0)
     html_dir = raw_dir / "html"
     html_dir.mkdir(exist_ok=True)
 
+    errors = []
     for i, rec in enumerate(unique_pnrs, 1):
         pnr = rec["pnr"]
         html_path = html_dir / f"{pnr}.html"
@@ -166,5 +186,9 @@ def run_fetch(cookies: list[dict], year: str, raw_dir: Path, delay: float = 1.0)
                 time.sleep(delay)
         except Exception as e:
             print(f"ERROR: {e}")
+            errors.append(pnr)
 
-    print(f"\nRaw HTML saved to {html_dir}/ ({len(unique_pnrs)} files)")
+    ok_count = len(unique_pnrs) - len(errors)
+    print(f"\nRaw HTML saved to {html_dir}/ ({ok_count}/{len(unique_pnrs)} files)")
+    if errors:
+        print(f"  Failed PNRs: {', '.join(errors)}")

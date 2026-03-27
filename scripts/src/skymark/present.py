@@ -1,6 +1,7 @@
 """Present layer — display and export. Takes structured data only."""
 
 import csv
+import html as html_mod
 import re
 import time
 
@@ -210,6 +211,11 @@ def export_csv(reservations: list[dict], path: str):
     print(f"\nCSV exported: {path}")
 
 
+def _esc(value) -> str:
+    """HTML-escape a value for safe interpolation into HTML output."""
+    return html_mod.escape(str(value)) if value else ""
+
+
 def export_html(reservations: list[dict], year: str, path: str):
     """Export to a self-contained HTML file for viewing/printing."""
     # Flatten rows
@@ -288,7 +294,7 @@ def export_html(reservations: list[dict], year: str, path: str):
 
     name = ""
     if reservations and reservations[0].get("lastname_alphabet"):
-        name = f"{reservations[0]['lastname_alphabet']} {reservations[0]['firstname_alphabet']}"
+        name = _esc(f"{reservations[0]['lastname_alphabet']} {reservations[0]['firstname_alphabet']}")
 
     # Build HTML
     html_parts = [f"""<!DOCTYPE html>
@@ -340,26 +346,26 @@ def export_html(reservations: list[dict], year: str, path: str):
         html_parts.append(f'<tr{cls}>')
         html_parts.append(f'  <td class="num">{i}</td>')
         if r["pnr"]:
-            html_parts.append(f'  <td{rs1}>{r["pnr"]}</td>')
-        html_parts.append(f'  <td>{r["date"]}</td>')
-        html_parts.append(f'  <td>{r["flight"]}</td>')
+            html_parts.append(f'  <td{rs1}>{_esc(r["pnr"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["date"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["flight"])}</td>')
         aircraft_short = r["aircraft"].replace("BOEING ", "B") if r["aircraft"] else ""
-        html_parts.append(f'  <td>{aircraft_short}</td>')
-        html_parts.append(f'  <td>{r["dep"]}</td>')
-        html_parts.append(f'  <td>{r["dep_time"]}</td>')
-        html_parts.append(f'  <td>{r["arr"]}</td>')
-        html_parts.append(f'  <td>{r["arr_time"]}</td>')
-        html_parts.append(f'  <td>{r["fare_type"]}</td>')
+        html_parts.append(f'  <td>{_esc(aircraft_short)}</td>')
+        html_parts.append(f'  <td>{_esc(r["dep"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["dep_time"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["arr"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["arr_time"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["fare_type"])}</td>')
         html_parts.append(f'  <td class="num">{r["fare_amount"]:,}円</td>')
-        html_parts.append(f'  <td>{r["seat"]}</td>')
-        html_parts.append(f'  <td>{r["seat_fee"]}</td>')
+        html_parts.append(f'  <td>{_esc(r["seat"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["seat_fee"])}</td>')
         if r["pnr"]:
             fee_val = f'{r["fees_total"]:,}円' if r["fees_total"] else "-"
             html_parts.append(f'  <td{rs1} class="num">{fee_val}</td>')
             html_parts.append(f'  <td{rs1} class="num">{r["total"]:,}円</td>')
-            html_parts.append(f'  <td{rs1}>{r["payment_status"]}</td>')
-            html_parts.append(f'  <td{rs1}>{r["payment_methods"]}</td>')
-        html_parts.append(f'  <td>{r["res_no"]}</td>')
+            html_parts.append(f'  <td{rs1}>{_esc(r["payment_status"])}</td>')
+            html_parts.append(f'  <td{rs1}>{_esc(r["payment_methods"])}</td>')
+        html_parts.append(f'  <td>{_esc(r["res_no"])}</td>')
         html_parts.append('</tr>')
 
     # Total row
@@ -403,7 +409,7 @@ def export_html(reservations: list[dict], year: str, path: str):
 """)
     html_parts.append(f'<tr><td>運賃合計</td><td class="num">{fare_total:,}円</td></tr>')
     for t, amount in sorted(fee_types.items(), key=lambda x: -x[1]):
-        html_parts.append(f'<tr><td>{t}</td><td class="num">{amount:,}円</td></tr>')
+        html_parts.append(f'<tr><td>{_esc(t)}</td><td class="num">{amount:,}円</td></tr>')
     html_parts.append(f'<tr class="total-row"><td>総合計</td><td class="num">{grand_total:,}円</td></tr>')
     html_parts.append('</table></div>')
 

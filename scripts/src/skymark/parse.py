@@ -11,6 +11,11 @@ from pathlib import Path
 def parse_flight_list_json(raw_dir: Path, year: str) -> list[dict]:
     """Parse flight list JSON, returns list of PNR records with flight summaries."""
     list_path = raw_dir / "flight_list.json"
+    if not list_path.exists():
+        raise FileNotFoundError(
+            f"{list_path} not found. Run fetch first (without --parse-only) "
+            f"or check --data-dir path."
+        )
     with open(list_path, encoding="utf-8") as f:
         raw_list = json.load(f)
 
